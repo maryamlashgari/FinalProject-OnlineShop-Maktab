@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Domain.Core.AppServices.Admins.Queries
+namespace App.Domain.Core.DataAccess
 {
-    public interface IGetAllComments
+    public interface ICommentRepository
     {
-        Task<List<UserComment>> Execute();
+        List<UserComment> GetAllUserComments();
     }
 }

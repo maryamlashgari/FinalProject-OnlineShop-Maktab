@@ -8,6 +8,5 @@ namespace App.Domain.Core.AppServices.Admins.Commands
 {
     public interface IConfirmProductAppService
     {
-        Task<bool> Execute(int id);
     }
 }
