@@ -9,6 +9,6 @@ namespace App.Domain.Core.AppServices.Admins.Queries
 {
     public interface IGetAllComments
     {
-        Task<List<UserComment>> Execute();
+        List<UserComment> Execute();
     }
 }
