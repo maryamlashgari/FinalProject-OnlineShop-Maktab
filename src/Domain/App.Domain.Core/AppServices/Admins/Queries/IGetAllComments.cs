@@ -1,4 +1,5 @@
-﻿using App.Domain.Core.Entities;
+﻿using App.Domain.Core.Dtos;
+using App.Domain.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace App.Domain.Core.AppServices.Admins.Queries
 {
     public interface IGetAllComments
     {
-        List<UserComment> Execute();
+        List<UserCommentDetailDto> Execute();
     }
 }
