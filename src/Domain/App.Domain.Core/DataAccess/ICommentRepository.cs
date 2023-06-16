@@ -10,9 +10,9 @@ namespace App.Domain.Core.DataAccess
 {
     public interface ICommentRepository
     {
-        Task<List<UserCommentDetailDto>> GetAll();
-        Task<UserCommentDetailDto> GetById(int id);
-        Task<int> Create(UserComment comment);
-        Task<int> Delete(UserComment comment);
+        Task<List<UserCommentDetailDto>> GetAll(CancellationToken cancellationToken);
+        Task<UserCommentDetailDto> GetById(int id, CancellationToken cancellationToken);
+        Task<int> Create(UserComment comment, CancellationToken cancellationToken);
+        Task<int> Delete(UserComment comment, CancellationToken cancellationToken);
     }
 }

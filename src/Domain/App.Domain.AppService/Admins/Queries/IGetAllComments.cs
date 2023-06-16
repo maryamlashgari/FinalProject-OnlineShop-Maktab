@@ -24,7 +24,7 @@ namespace App.Domain.AppService.Admins.Queries
         /// <returns></returns>
         public List<UserCommentDetailDto> Execute()
         {
-            return _commentRepo.GetAllUserComments();
+            return null;//_commentRepo.GetAll();
         }
     }
 }

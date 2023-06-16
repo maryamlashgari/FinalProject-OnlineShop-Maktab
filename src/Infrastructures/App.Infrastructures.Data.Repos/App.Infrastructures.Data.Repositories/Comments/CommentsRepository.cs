@@ -2,6 +2,7 @@
 using App.Domain.Core.Dtos;
 using App.Domain.Core.Entities;
 using App.Infrastructures.Db.SqlServer.Ef.Database;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,40 +15,55 @@ namespace App.Infrastructures.Data.Repositories.Comments
     public class CommentsRepository : ICommentRepository
     {
         private readonly AppDBContext _context;
+        private readonly IMapper _mapper;
 
-        public CommentsRepository(AppDBContext context)
+
+        public CommentsRepository(AppDBContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<int> Create(UserComment comment)
+        public async Task<int> Create(UserComment comment, CancellationToken cancellationToken)
         {
-            await _context.AddAsync(comment);
-            _context.SaveChanges();
+            await _context.AddAsync(comment, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
             return comment.Id;
         }
 
-        public async Task<int> Delete(UserComment comment)
+        public async Task<int> Delete(UserComment comment, CancellationToken cancellationToken)
         {
-            var currentComment = _context.UserComments.FirstOrDefault(u => u.Id == comment.Id);
-            currentComment.isde
-        }
-
-        public async Task<List<UserCommentDetailDto>> GetAll()
-        {
-             return await _context.UserComments.Select(u => new UserCommentDetailDto()
+            var currentComment = await _context.UserComments.FirstOrDefaultAsync(u => u.Id == comment.Id);
+            if (currentComment != null)
             {
-                Id = u.Id,
-                ProductId = u.ProductId,
-                UserId = u.UserId,
-                Comment = u.Comment,
-                ConfirmedByAdmin = u.ConfirmedByAdmin
-            }).ToListAsync();
+                currentComment.IsDeletedFlag = true;
+                await _context.SaveChangesAsync(cancellationToken);
+                return comment.Id;
+            }
+            else
+            { throw new Exception("The Data User Requested is not valid!"); }
         }
 
-        public Task<UserCommentDetailDto> GetById(int id)
+        public async Task<List<UserCommentDetailDto>> GetAll(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            //return await _context.UserComments.Select(u => new UserCommentDetailDto()
+            //{
+            //    Id = u.Id,
+            //    ProductId = u.ProductId,
+            //    UserId = u.UserId,
+            //    Comment = u.Comment,
+            //    ConfirmedByAdmin = u.ConfirmedByAdmin
+            //}).ToListAsync();
+
+            var comments = _mapper.Map<List<UserCommentDetailDto>>(await _context.UserComments.ToListAsync(cancellationToken));
+            return comments;
+
+        }
+
+        public async Task<UserCommentDetailDto> GetById(int id, CancellationToken cancellationToken)
+        {
+            var comment = _mapper.Map<UserCommentDetailDto>(await _context.UserComments.FirstOrDefaultAsync(c => c.Id == id, cancellationToken));
+            return comment;
         }
     }
 }
