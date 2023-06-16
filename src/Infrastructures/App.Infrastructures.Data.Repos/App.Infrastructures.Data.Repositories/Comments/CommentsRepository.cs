@@ -2,6 +2,7 @@
 using App.Domain.Core.Dtos;
 using App.Domain.Core.Entities;
 using App.Infrastructures.Db.SqlServer.Ef.Database;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,16 +19,35 @@ namespace App.Infrastructures.Data.Repositories.Comments
         {
             _context = context;
         }
-        public List<UserCommentDetailDto> GetAllUserComments()
+
+        public async Task<int> Create(UserComment comment)
         {
-            return _context.UserComments.Select(u => new UserCommentDetailDto()
+            await _context.AddAsync(comment);
+            _context.SaveChanges();
+            return comment.Id;
+        }
+
+        public async Task<int> Delete(UserComment comment)
+        {
+            var currentComment = _context.UserComments.FirstOrDefault(u => u.Id == comment.Id);
+            currentComment.isde
+        }
+
+        public async Task<List<UserCommentDetailDto>> GetAll()
+        {
+             return await _context.UserComments.Select(u => new UserCommentDetailDto()
             {
                 Id = u.Id,
                 ProductId = u.ProductId,
                 UserId = u.UserId,
                 Comment = u.Comment,
                 ConfirmedByAdmin = u.ConfirmedByAdmin
-            }).ToList();
+            }).ToListAsync();
+        }
+
+        public Task<UserCommentDetailDto> GetById(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
