@@ -16,6 +16,7 @@ public partial class UserComment
     public bool? ConfirmedByAdmin { get; set; }
 
     public int? CreatedByUserId { get; set; }
+    public bool IsDeletedFlag { get; set; }
 
     public DateTime? CreatedDateTime { get; set; }
 

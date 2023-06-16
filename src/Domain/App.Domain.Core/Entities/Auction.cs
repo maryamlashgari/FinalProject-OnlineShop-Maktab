@@ -15,7 +15,8 @@ public partial class Auction
 
     public double? BestPriceOffer { get; set; }
 
-    public bool? FinishedFlagq { get; set; }
+    public bool? FinishedFlag { get; set; }
+    public bool IsDeletedFlag { get; set; }
 
     public int? CreatedByUserId { get; set; }
 

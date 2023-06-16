@@ -16,6 +16,7 @@ public partial class Factor
     public int? CreatedByUserId { get; set; }
 
     public DateTime? CreatedDateTime { get; set; }
+    public bool IsDeletedFlag { get; set; }
 
     public virtual ICollection<FactorFinalDetail> FactorFinalDetails { get; set; } = new List<FactorFinalDetail>();
 

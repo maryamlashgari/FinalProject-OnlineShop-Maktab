@@ -20,6 +20,7 @@ public partial class Offer
     public int? CreatedByUserId { get; set; }
 
     public DateTime? CreatedDateTime { get; set; }
+    public bool IsDeletedFlag { get; set; }
 
     public virtual Auction Auction { get; set; } = null!;
 }

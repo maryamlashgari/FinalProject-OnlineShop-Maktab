@@ -16,6 +16,7 @@ public partial class Chategory
     public int? CreatedByUserId { get; set; }
 
     public DateTime? CreatedDateTime { get; set; }
+    public bool IsDeletedFlag { get; set; }
 
     public virtual ICollection<Chategory> InverseParent { get; set; } = new List<Chategory>();
 
