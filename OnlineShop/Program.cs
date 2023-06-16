@@ -1,3 +1,5 @@
+using App.Domain.Core.DataAccess;
+using App.Infrastructures.Data.Repositories.Comments;
 using App.Infrastructures.Db.SqlServer.Ef.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +12,12 @@ var config = new ConfigurationBuilder()
 .AddJsonFile("appsettings.json", optional: false)
 .AddJsonFile("appsettings.Development.json", optional: false)
 .Build();
+
+#region config DI
+builder.Services.AddScoped<ICommentRepository, CommentsRepository>();
+
+
+#endregion config DI
 
 #region config dbContext
 var connectionString = config.GetSection("ConnectionStrings:DefaultConnection").Value;
