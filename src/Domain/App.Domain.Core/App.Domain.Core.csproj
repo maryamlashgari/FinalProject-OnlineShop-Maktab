@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="AppServices\Buyers\" />
     <Folder Include="AppServices\Sellers\" />
-    <Folder Include="Dtos\" />
   </ItemGroup>
 
 </Project>

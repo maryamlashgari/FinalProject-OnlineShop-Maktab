@@ -14,6 +14,7 @@ namespace App.Infrastructures.Data.Repositories.AutoMapper
         public AutoMapper_Infra()
         {
             CreateMap<UserComment, UserCommentDetailDto>().ReverseMap();
+            CreateMap<Auction, AuctionDetailDto>().ReverseMap();
         }
     }
 }
