@@ -53,6 +53,19 @@ namespace App.Infrastructures.Data.Repositories.Auctions
             return _mapper.Map<List<AuctionDetailDto>>(auctions);
         }
 
+        public async Task<List<AuctionDetailDto>> GetAllByUserId(int userId, CancellationToken cancellationToken)
+        {
+            var currentUsersAuctions = await _context.Auctions.Where(a => a.CreatedByUserId == userId && a.IsDeletedFlag != true).ToListAsync(cancellationToken);
+            if (currentUsersAuctions != null && currentUsersAuctions.Count() > 0)
+            {
+                return _mapper.Map<List<AuctionDetailDto>>(currentUsersAuctions);
+            }
+            else
+            {
+                throw new Exception("The data user Requested is not valid!");
+            }
+        }
+
         public async Task<AuctionDetailDto> GetById(int id, CancellationToken cancellationToken)
         {
             var result = await _context.Auctions.FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
