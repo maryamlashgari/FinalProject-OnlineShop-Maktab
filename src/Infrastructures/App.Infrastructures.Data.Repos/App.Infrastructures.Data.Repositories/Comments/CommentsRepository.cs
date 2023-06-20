@@ -26,6 +26,7 @@ namespace App.Infrastructures.Data.Repositories.Comments
 
         public async Task<int> Create(UserComment comment, CancellationToken cancellationToken)
         {
+            //حواست باشه که به این مرحله که میرسه تاریخ ثبت رو در سرویس باید مشخص کرده باشی.
             await _context.AddAsync(comment, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
             return comment.Id;
