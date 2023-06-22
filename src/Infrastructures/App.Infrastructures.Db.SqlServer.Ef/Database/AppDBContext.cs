@@ -21,7 +21,7 @@ public partial class AppDBContext : DbContext
 
     public virtual DbSet<Booth> Booths { get; set; }
 
-    public virtual DbSet<Chategory> Chategories { get; set; }
+    public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Factor> Factors { get; set; }
 

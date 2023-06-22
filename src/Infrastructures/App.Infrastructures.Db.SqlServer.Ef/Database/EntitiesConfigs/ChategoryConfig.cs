@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace App.Infrastructures.Db.SqlServer.Ef.Database.EntitiesConfigs
 {
-    public class ChategoryConfig : IEntityTypeConfiguration<Chategory>
+    public class ChategoryConfig : IEntityTypeConfiguration<Category>
     {
-        public void Configure(EntityTypeBuilder<Chategory> builder)
+        public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.ToTable("Chategory");
 

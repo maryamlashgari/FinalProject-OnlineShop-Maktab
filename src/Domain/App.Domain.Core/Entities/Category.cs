@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace App.Domain.Core.Entities;
 
-public partial class Chategory
+public partial class Category
 {
     public int Id { get; set; }
 
@@ -18,7 +18,7 @@ public partial class Chategory
     public DateTime? CreatedDateTime { get; set; }
     public bool IsDeletedFlag { get; set; }
 
-    public virtual ICollection<Chategory> InverseParent { get; set; } = new List<Chategory>();
+    public virtual ICollection<Category> InverseParent { get; set; } = new List<Category>();
 
-    public virtual Chategory? Parent { get; set; }
+    public virtual Category? Parent { get; set; }
 }
