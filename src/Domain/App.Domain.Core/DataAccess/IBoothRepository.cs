@@ -14,6 +14,6 @@ namespace App.Domain.Core.DataAccess
         Task<BoothDetailDto> GetById(int id, CancellationToken cancellationToken);
         Task<int> Create(BoothDetailDto booth, CancellationToken cancellationToken);
         Task<int> Update(BoothDetailDto booth, CancellationToken cancellationToken);
-        Task<int> Delete(int id, CancellationToken cancellationToken);
+        Task<int> DeleteById(int id, CancellationToken cancellationToken);
     }
 }

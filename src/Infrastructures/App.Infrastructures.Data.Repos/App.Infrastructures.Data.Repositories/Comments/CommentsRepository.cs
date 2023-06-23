@@ -34,7 +34,7 @@ namespace App.Infrastructures.Data.Repositories.Comments
 
         public async Task<int> Delete(UserComment comment, CancellationToken cancellationToken)
         {
-            var currentComment = await _context.UserComments.FirstOrDefaultAsync(u => u.Id == comment.Id);
+            var currentComment = await _context.UserComments.FirstOrDefaultAsync(u => u.Id == comment.Id && u.IsDeletedFlag != true, cancellationToken);
             if (currentComment != null)
             {
                 currentComment.IsDeletedFlag = true;
@@ -42,7 +42,9 @@ namespace App.Infrastructures.Data.Repositories.Comments
                 return comment.Id;
             }
             else
-            { throw new Exception("The Data User Requested is not valid!"); }
+            {
+                throw new Exception("داده مورد نظر یافت نشد");
+            }
         }
 
         public async Task<List<UserCommentDetailDto>> GetAll(CancellationToken cancellationToken)
@@ -56,14 +58,19 @@ namespace App.Infrastructures.Data.Repositories.Comments
             //    ConfirmedByAdmin = u.ConfirmedByAdmin
             //}).ToListAsync();
 
-            var comments = _mapper.Map<List<UserCommentDetailDto>>(await _context.UserComments.ToListAsync(cancellationToken));
+            var comments = _mapper.Map<List<UserCommentDetailDto>>(await _context.UserComments.Where(c => c.IsDeletedFlag != true).ToListAsync(cancellationToken));
             return comments;
 
         }
 
         public async Task<UserCommentDetailDto> GetById(int id, CancellationToken cancellationToken)
         {
-            var comment = _mapper.Map<UserCommentDetailDto>(await _context.UserComments.FirstOrDefaultAsync(c => c.Id == id, cancellationToken));
+            if(id==0)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+            var comment = _mapper.Map<UserCommentDetailDto>(await _context.UserComments.FirstOrDefaultAsync(c => c.Id == id && c.IsDeletedFlag != true, cancellationToken));
+            //TODO: اینجا هم باید بپرسی که آیا اگر مقداری به ازای آیدی مورد نظر پیدا نشد بهتره چیکار کنیم. یا یااینکه جلوتر روش فکر کن و تصمیم بگیر
             return comment;
         }
     }

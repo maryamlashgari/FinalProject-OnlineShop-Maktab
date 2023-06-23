@@ -34,7 +34,7 @@ namespace App.Infrastructures.Data.Repositories.Booths
             return booth.Id;
         }
 
-        public async Task<int> Delete(int id, CancellationToken cancellationToken)
+        public async Task<int> DeleteById(int id, CancellationToken cancellationToken)
         {
             Booth? currentBooth = await _context.Booths.FirstOrDefaultAsync(b => b.Id == id && b.IsDeletedFlag != true, cancellationToken: cancellationToken);
             if (currentBooth == null)
@@ -47,7 +47,8 @@ namespace App.Infrastructures.Data.Repositories.Booths
 
         public async Task<List<BoothDetailDto>> GetAll(CancellationToken cancellationToken)
         {
-            List<Booth> result = await _context.Booths.ToListAsync();
+            List<Booth> result = await _context.Booths.Where(c => c.IsDeletedFlag != true).ToListAsync(cancellationToken);
+            //TODO:  اینجا تست کن که اگر مقدار بازگشتی نال باشه در برخورد با مپر چ میکند.؟
             return _mapper.Map<List<BoothDetailDto>>(result);
         }
 
@@ -57,7 +58,8 @@ namespace App.Infrastructures.Data.Repositories.Booths
             {
                 throw new ArgumentNullException();
             }
-            List<Booth> result = await _context.Booths.Where(b => b.UserId == userId).ToListAsync();
+            List<Booth> result = await _context.Booths.Where(b => b.UserId == userId).ToListAsync(cancellationToken);
+            //TODO:  اینجا تست کن که اگر مقدار بازگشتی نال باشه در برخورد با مپر چ میکند.؟
             return _mapper.Map<List<BoothDetailDto>>(result);
         }
 
@@ -67,7 +69,11 @@ namespace App.Infrastructures.Data.Repositories.Booths
             {
                 throw new ArgumentNullException();
             }
-            var result = await _context.Booths.FirstOrDefaultAsync(b => b.Id == id);
+            var result = await _context.Booths.FirstOrDefaultAsync(b => b.Id == id && b.IsDeletedFlag != true,cancellationToken);
+            if(result == null)
+            {
+                throw new Exception("داده مورد نظر یافت نشد");
+            }
             return _mapper.Map<BoothDetailDto>(result);
         }
 
@@ -77,7 +83,7 @@ namespace App.Infrastructures.Data.Repositories.Booths
             {
                 throw new ArgumentNullException();
             }
-            var currentBooth = await _context.Booths.FirstOrDefaultAsync(b => b.Id == booth.Id);
+            var currentBooth = await _context.Booths.FirstOrDefaultAsync(b => b.Id == booth.Id && b.IsDeletedFlag != true, cancellationToken);
             if (currentBooth == null)
             {
                 throw new Exception("داده مورد نظر یافت نشد");
@@ -85,7 +91,7 @@ namespace App.Infrastructures.Data.Repositories.Booths
             currentBooth.MedalId = booth.MedalId;
             currentBooth.CathIdsCsv = booth.CathIdsCsv;
             currentBooth.Name = booth.Name;
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return currentBooth.Id;
         }
     }

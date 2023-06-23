@@ -19,35 +19,35 @@ namespace App.Infrastructures.Data.Repositories.Categories
         {
             _context = context;
         }
-        public async Task<int> Create(Category category, CancellationToken cancellation)
+        public async Task<int> Create(Category category, CancellationToken cancellationTocken)
         {
             if (category == null)
             {
                 throw new ArgumentNullException("category");
             }
-            await _context.AddAsync(category);
-            await _context.SaveChangesAsync();
+            await _context.AddAsync(category,cancellationTocken);
+            await _context.SaveChangesAsync(cancellationTocken);
             return category.Id;
         }
 
-        public async Task Delete(int id, CancellationToken cancellation)
+        public async Task Delete(int id, CancellationToken cancellationTocken)
         {
             if (id == 0)
             {
                 throw new ArgumentNullException("id");
             }
-            var currentCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.IsDeletedFlag != true);
+            var currentCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.IsDeletedFlag != true, cancellationTocken);
             if (currentCategory == null)
             {
                 throw new Exception("داده مورد نظر یافت نشد");
             }
             currentCategory.IsDeletedFlag = true;
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationTocken);
         }
 
-        public async Task<List<CategoryDetailDto>> GetAll(CancellationToken cancellation)
+        public async Task<List<CategoryDetailDto>> GetAll(CancellationToken cancellationTocken)
         {
-            List<Category> list = await _context.Categories.Where(c=>c.IsDeletedFlag != true).ToListAsync();
+            List<Category> list = await _context.Categories.Where(c=>c.IsDeletedFlag != true).ToListAsync(cancellationTocken);
             if (list != null && list.Count() > 0)
             {
                 List<CategoryDetailDto> result = new List<CategoryDetailDto>();
@@ -60,13 +60,13 @@ namespace App.Infrastructures.Data.Repositories.Categories
             return null;//باید تصمیم بگیرم که در صورت خالی بودن نال برگردانم یا اکسپشن
         }
 
-        public async Task<CategoryDetailDto> GetById(int id, CancellationToken cancellation)
+        public async Task<CategoryDetailDto> GetById(int id, CancellationToken cancellationTocken)
         {
             if (id == 0)
             {
                 throw new ArgumentNullException("id");
             }
-            var currentCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.IsDeletedFlag != true);
+            var currentCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.IsDeletedFlag != true,cancellationTocken);
             if (currentCategory == null)
             {
                 throw new Exception("داده مورد نظر یافت نشد");
@@ -75,21 +75,18 @@ namespace App.Infrastructures.Data.Repositories.Categories
 
         }
 
-        public Task<int> Update(Category category, CancellationToken cancellation)
+        public async Task<int> Update(Category category, CancellationToken cancellationTocken)
         {
             if (category == null)
             {
                 throw new ArgumentNullException("category");
             }
-            var currentCategory = _context.Categories.FirstOrDefault(c => c.Id == category.Id && c.IsDeletedFlag != true);
+            var currentCategory =await _context.Categories.FirstOrDefaultAsync(c => c.Id == category.Id && c.IsDeletedFlag != true,cancellationTocken);
             if (currentCategory != null)
             {
                 currentCategory.Name = category.Name;
                 currentCategory.ParentId = category.ParentId;
-                currentCategory.CreatedDateTime = category.CreatedDateTime;
                 currentCategory.Description = category.Description;
-                currentCategory.IsDeletedFlag = category.IsDeletedFlag;
-
             }
             throw new Exception("داده مورد نظر یافت نشد");
         }
