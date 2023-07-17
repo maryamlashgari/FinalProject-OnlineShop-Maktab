@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\src\Infrastructures\App.Infrastructures.Data.Repos\App.Infrastructures.Data.Repositories\App.Infrastructures.Data.Repositories.csproj" />
 		<ProjectReference Include="..\src\Infrastructures\App.Infrastructures.Db.SqlServer.Ef\App.Infrastructures.Db.SqlServer.Ef.csproj" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
 			<PrivateAssets>all</PrivateAssets>

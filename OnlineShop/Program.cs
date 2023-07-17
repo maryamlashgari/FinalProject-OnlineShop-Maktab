@@ -1,4 +1,5 @@
 using App.Domain.Core.DataAccess;
+using App.Infrastructures.Data.Repositories.AutoMapper;
 using App.Infrastructures.Data.Repositories.Comments;
 using App.Infrastructures.Db.SqlServer.Ef.Database;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,9 @@ builder.Services.AddScoped<ICommentRepository, CommentsRepository>();
 
 #endregion config DI
 
+//builder.Services.AddScoped<ICommentRepository, CommentsRepository>();
+builder.Services.AddAutoMapper(typeof(AutoMapper_Infra));
+
 #region config dbContext
 var connectionString = config.GetSection("ConnectionStrings:DefaultConnection").Value;
 builder.Services.AddDbContext<AppDBContext>(options =>
@@ -26,6 +30,7 @@ builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlServer(connectionString);
 });
 #endregion config dbContext
+
 
 var app = builder.Build();
 
