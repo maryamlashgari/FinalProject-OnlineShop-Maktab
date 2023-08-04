@@ -2,7 +2,9 @@ using App.Domain.Core.DataAccess;
 using App.Infrastructures.Data.Repositories.AutoMapper;
 using App.Infrastructures.Data.Repositories.Comments;
 using App.Infrastructures.Db.SqlServer.Ef.Database;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,18 @@ builder.Services.AddScoped<ICommentRepository, CommentsRepository>();
 
 
 #endregion config DI
+#region config identity
+builder.Services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 4;
+    options.Password.RequireNonAlphanumeric = false;
+}).AddEntityFrameworkStores<AppDBContext>();
+#endregion config identity
 
 //builder.Services.AddScoped<ICommentRepository, CommentsRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapper_Infra));
