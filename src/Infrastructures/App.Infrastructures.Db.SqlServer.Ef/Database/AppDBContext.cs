@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using App.Domain.Core.Entities;
 using App.Infrastructures.Db.SqlServer.Ef.Database.EntitiesConfigs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace App.Infrastructures.Db.SqlServer.Ef.Database;
 
-public partial class AppDBContext : DbContext
+public partial class AppDBContext : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
 {
     public AppDBContext()
     {
